@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportIQ - Intelligent IT Support</title>
+    <meta name="description" content="AI-powered IT support automation with semantic search and intelligent ticket routing">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Animated Background -->
+        <div class="bg-gradient"></div>
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🔧</span>
+                <h1>SupportIQ</h1>
+            </div>
+            <p class="tagline">Intelligent IT Support Automation</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Query Input Section -->
+            <section class="glass-card query-section">
+                <div class="section-header">
+                    <span class="section-icon">💬</span>
+                    <h2>Submit Your Query</h2>
+                </div>
+                
+                <form id="queryForm" class="query-form">
+                    <div class="form-group">
+                        <label for="title">Issue Title</label>
+                        <input 
+                            type="text" 
+                            id="title" 
+                            name="title" 
+                            placeholder="e.g., Cannot access email - Outlook not syncing"
+                            required
+                            minlength="5"
+                            maxlength="500"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea 
+                            id="description" 
+                            name="description" 
+                            placeholder="Describe your issue in detail. Include any error messages, steps you've already tried, and when the issue started..."
+                            required
+                            minlength="10"
+                            rows="5"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email (Optional)</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                placeholder="your.email@company.com"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category">
+                                <option value="">Select category...</option>
+                                <option value="email">📧 Email</option>
+                                <option value="network">🌐 Network</option>
+                                <option value="software">💻 Software</option>
+                                <option value="hardware">🖥️ Hardware</option>
+                                <option value="security">🔒 Security</option>
+                                <option value="account">👤 Account</option>
+                                <option value="other">📋 Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text">Analyze & Find Solutions</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Results Container -->
+            <div id="resultsContainer" class="results-container hidden">
+                <!-- AI Analysis Section -->
+                <section class="glass-card analysis-section">
+                    <div class="section-header">
+                        <span class="section-icon">🤖</span>
+                        <h2>AI Analysis</h2>
+                    </div>
+
+                    <div class="analysis-grid">
+                        <!-- Sentiment Card -->
+                        <div class="analysis-card sentiment-card">
+                            <div class="analysis-label">Sentiment</div>
+                            <div class="sentiment-display">
+                                <span id="sentimentEmoji" class="sentiment-emoji">😐</span>
+                                <span id="sentimentLabel" class="sentiment-label">Neutral</span>
+                            </div>
+                            <div class="confidence-bar">
+                                <div id="confidenceBar" class="confidence-fill" style="width: 0%"></div>
+                            </div>
+                            <span id="confidenceText" class="confidence-text">0% confidence</span>
+                        </div>
+
+                        <!-- Urgency Card -->
+                        <div class="analysis-card urgency-card">
+                            <div class="analysis-label">Urgency Score</div>
+                            <div class="urgency-display">
+                                <span id="urgencyScore" class="urgency-score">0</span>
+                                <span class="urgency-max">/10</span>
+                            </div>
+                            <div id="urgencyLevel" class="urgency-badge low">LOW</div>
+                            <p id="urgencyExplanation" class="urgency-explanation"></p>
+                        </div>
+
+                        <!-- Tier Card -->
+                        <div class="analysis-card tier-card">
+                            <div class="analysis-label">Assigned Support Tier</div>
+                            <div id="tierBadge" class="tier-badge L1">
+                                <span class="tier-icon">👤</span>
+                                <span class="tier-name">L1</span>
+                            </div>
+                            <p class="tier-description">
+                                <span id="tierDesc">Self-Service / FAQ</span>
+                            </p>
+                        </div>
+
+                        <!-- Ticket Info Card -->
+                        <div class="analysis-card ticket-card">
+                            <div class="analysis-label">Ticket Created</div>
+                            <div class="ticket-id">
+                                <span class="ticket-hash">#</span>
+                                <span id="ticketId">---</span>
+                            </div>
+                            <div id="ticketStatus" class="ticket-status open">OPEN</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Solutions Section -->
+                <section class="glass-card solutions-section">
+                    <div class="section-header">
+                        <span class="section-icon">💡</span>
+                        <h2>Suggested Solutions</h2>
+                        <span id="solutionCount" class="solution-count">0 found</span>
+                    </div>
+
+                    <div id="solutionsList" class="solutions-list">
+                        <!-- Solutions will be dynamically inserted here -->
+                    </div>
+
+                    <div id="noSolutions" class="no-solutions hidden">
+                        <span class="no-solutions-icon">🔍</span>
+                        <p>No matching solutions found in the knowledge base.</p>
+                        <p class="no-solutions-hint">A support agent will review your ticket shortly.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by <strong>MiniLM Semantic Search</strong> & <strong>BERT Sentiment Analysis</strong></p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
